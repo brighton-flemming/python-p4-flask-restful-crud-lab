@@ -8,7 +8,6 @@ function PlantPage() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    // no need to use http://localhost:5555 here
     fetch("/plants")
       .then((r) => r.json())
       .then((plantsArray) => {
