@@ -2,12 +2,11 @@
 
 from flask import Flask, jsonify, request, make_response
 from flask_migrate import Migrate
-from flask_restful import Api, Resource, reqparse
+from flask_restful import Api, Resource
 
 from models import db, Plant
 
-parser = reqparse.RequestParser()
-parser.add_argument('')
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///plants.db'
@@ -51,7 +50,23 @@ class PlantByID(Resource):
         return make_response(jsonify(plant), 200)
     
     def patch(self, id):
-        pass
+        plant = Plant.query.get(id)
+
+        if not plant:
+            return {"error":"Plant Not Found"}
+        
+        data = request.get_json()
+
+        if 'name' in data:
+            plant.name = data['name']
+        elif 'image' in data:
+            plant.image = data['image']
+        elif 'price' in data:
+            plant.price = data['price']
+        elif 'is_in_stock' in data:
+            plant.is_in_stock = data['is_in_stock']
+
+        db.session.commit()
 
     def delete(self, id):
         plant = Plant.query.get(id)

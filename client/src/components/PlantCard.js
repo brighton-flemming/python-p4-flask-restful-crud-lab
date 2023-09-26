@@ -16,7 +16,7 @@ function PlantCard({ plant, handleUpdatePlant, handleDeletePlant  }) {
     handleUpdate(updatedPlant)
   }
 
-  const handleUpdate = async (updatedPlant) => {
+  const handleUpdate = async (id, updatedPlant) => {
     const response = await fetch(`/plants/${id}`, {
       method: "PATCH",
       headers: {

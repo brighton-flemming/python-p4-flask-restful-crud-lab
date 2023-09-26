@@ -24,5 +24,7 @@ with app.app_context():
         is_in_stock=False,
     )
 
+    
+
     db.session.add_all([aloe, zz_plant])
     db.session.commit()
