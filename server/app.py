@@ -59,7 +59,7 @@ class PlantByID(Resource):
         data = parser.parse_args()
 
 
-        plant = Plant.query.get(id)
+        plant = db.session.query(Plant).get(id)
 
         if not plant:
             return {"error":"Plant Not Found"}
@@ -78,7 +78,7 @@ class PlantByID(Resource):
         return {"message":"Plant Updated Successfully.", "is_in_stock":plant.is_in_stock}
 
     def delete(self, id):
-        plant = Plant.query.get(id)
+        plant = db.session.query(Plant).get(id)
 
         if plant:
           db.session.delete(plant)
