@@ -2,7 +2,7 @@
 
 from flask import Flask, jsonify, request, make_response
 from flask_migrate import Migrate
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse
 
 from models import db, Plant
 
@@ -17,6 +17,12 @@ migrate = Migrate(app, db)
 db.init_app(app)
 
 api = Api(app)
+
+parser = reqparse.RequestParser()
+parser.add_argument('name', type=str)
+parser.add_argument('image', type=str)
+parser.add_argument('price', type=float)
+parser.add_argument('is_in_stock', type=bool)
 
 
 class Plants(Resource):
@@ -50,13 +56,14 @@ class PlantByID(Resource):
         return make_response(jsonify(plant), 200)
     
     def patch(self, id):
+        data = parser.parse_args()
+
+
         plant = Plant.query.get(id)
 
         if not plant:
             return {"error":"Plant Not Found"}
-        
-        data = request.get_json()
-
+    
         if 'name' in data:
             plant.name = data['name']
         elif 'image' in data:
@@ -67,6 +74,8 @@ class PlantByID(Resource):
             plant.is_in_stock = data['is_in_stock']
 
         db.session.commit()
+
+        return {"message":"Plant Updated Successfully.", "plant": plant.serialize()}
 
     def delete(self, id):
         plant = Plant.query.get(id)
