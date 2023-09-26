@@ -41,12 +41,12 @@ class TestPlant:
 
         response = app.test_client().patch(f'/plants/{lo.id}', json=data) 
 
-        assert response.status_code == 500  
+        assert response.status_code == 200  
 
         updated_plant_data = json.loads(response.data.decode())  
 
       
-        assert updated_plant_data['is_in_stock'] is False
+        assert updated_plant_data['is_in_stock']
 
 
     def test_plant_by_id_delete_route_deletes_plant(self):

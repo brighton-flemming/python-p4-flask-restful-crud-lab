@@ -75,7 +75,7 @@ class PlantByID(Resource):
 
         db.session.commit()
 
-        return {"message":"Plant Updated Successfully.", "plant": plant.serialize()}
+        return {"message":"Plant Updated Successfully.", "is_in_stock":plant.is_in_stock}
 
     def delete(self, id):
         plant = Plant.query.get(id)
